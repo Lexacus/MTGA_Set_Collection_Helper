@@ -1,9 +1,8 @@
 import { FlexCol } from "../components/base.styles";
 import { CardCounter } from "../components/card.counter";
+import { data } from "../temp.card.data";
 
 const Homepage = () => {
-  const data = [{ name: "Atraxa", owned: 0 }];
-
   return (
     <>
       <FlexCol>
