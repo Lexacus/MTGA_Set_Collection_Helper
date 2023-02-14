@@ -7,10 +7,12 @@ const Flex = styled.div`
   display: flex;
   flex-direction: ${({ flexDirection }: FlexProps) =>
     flexDirection ?? "column"};
-  width: ${({ width }: FlexProps) => width ?? "fit-content"};
+  width: ${({ width }: FlexProps) => width ?? "100%"};
   margin: ${({ margin }: FlexProps) => margin ?? "fit-content"};
   padding: ${({ padding }: FlexProps) => padding ?? "fit-content"};
   column-gap: ${({ columnGap }: FlexProps) => columnGap ?? "0"};
+  justify-content: flex-start;
+  overflow: hidden;
 `;
 
 export const FlexCol = ({ children, ...props }: FlexProps) => {

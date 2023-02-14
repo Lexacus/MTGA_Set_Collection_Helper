@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useStore } from "../store";
 import { TCard } from "../types";
 import { FlexCol, FlexRow } from "./base.styles";
 import { Text } from "./text";
+import { shallow } from "zustand/shallow";
 
 enum RarityColorEnum {
   M = "orange",
@@ -10,31 +12,46 @@ enum RarityColorEnum {
   N = "white",
 }
 
-export const CardCounter = ({ name, owned, rarity }: TCard) => {
-  const [counter, setCounter] = useState(owned);
+export const CardCounter = ({
+  card,
+  index,
+}: {
+  card: TCard;
+  index: number;
+}) => {
+  const { cards, setCards } = useStore(
+    ({ cards, setCards }) => ({ cards, setCards }),
+    shallow
+  );
 
   return (
     <FlexRow columnGap="10px">
-      <Text width="300px" color={RarityColorEnum[rarity]}>
-        {name}
+      <Text width="300px" color={RarityColorEnum[cards?.[index].rarity ?? "R"]}>
+        {cards?.[index].name}
       </Text>
       <Text
         cursor="pointer"
         onClick={() => {
-          if (counter > 0) {
-            setCounter(counter - 1);
+          if (cards) {
+            if (cards?.[index].owned > 0) {
+              cards[index].owned--;
+              setCards([...cards]);
+            }
           }
         }}
       >
         {"-"}
       </Text>
 
-      <Text>{counter}</Text>
+      <Text>{cards?.[index].owned}</Text>
       <Text
         cursor="pointer"
         onClick={() => {
-          if (counter < 4) {
-            setCounter(counter + 1);
+          if (cards) {
+            if (cards?.[index].owned < 4) {
+              cards[index].owned++;
+              setCards([...cards]);
+            }
           }
         }}
       >
