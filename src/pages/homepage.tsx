@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { shallow } from "zustand/shallow";
 import { FlexCol } from "../components/base.styles";
 import { CardCounter } from "../components/card.counter";
@@ -51,7 +51,23 @@ const Homepage = () => {
     );
   }, [cards]);
 
-  console.log();
+  const saveCards = () => {
+    console.log("Saving cards");
+
+    const data = JSON.stringify(cards);
+
+    const element = document.createElement("a");
+    const file = new Blob([data], { type: "text/plain" });
+    element.href = URL.createObjectURL(file);
+    element.download = "mtg_sch_cards.json";
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+  };
+
+  const cardsRef = useRef<HTMLInputElement>(null);
+  const readCards = () => {
+    cardsRef?.current?.click();
+  };
   return (
     <>
       <FlexRow>
@@ -61,6 +77,29 @@ const Homepage = () => {
           ))}
         </FlexCol>
         <FlexCol>
+          <Text onClick={saveCards} cursor="pointer">
+            SAVE CARDS
+          </Text>
+          <Text onClick={readCards} cursor="pointer">
+            READ CARDS
+          </Text>
+          <input
+            ref={cardsRef}
+            type="file"
+            hidden
+            onChange={async (e) => {
+              URL.revokeObjectURL(e.target.files?.[0] as any);
+              const fileObject = URL.createObjectURL(
+                e.target.files?.[0] as any
+              );
+              console.log("fileobject created");
+              const res = await fetch(fileObject);
+              console.log("res awaited");
+
+              setCards(await res.json());
+              console.log("json parsed", await res.json());
+            }}
+          ></input>
           <Text>Number of mythics in the set: 19</Text>
           <Text>{"Number of mythics owned: " + noOfMythics}</Text>
           <Text>
