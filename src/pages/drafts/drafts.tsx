@@ -14,6 +14,7 @@ import {
   DraftTableCell,
   Input,
   StatsWrapper,
+  StatsContainer,
 } from "./drafts.styles";
 
 const Drafts = () => {
@@ -63,25 +64,30 @@ const Drafts = () => {
             <Option value={7}>7</Option>
           </Select>
           <Select {...register("type")}>
-            <Option value={"premier"}>Premier/Traditional</Option>
+            <Option value={"premier"}>Premier</Option>
+            <Option value={"traditional"}>Traditional</Option>
             <Option value={"quick"}>Quick</Option>
           </Select>
           <Input {...register("raresDrafted")} placeholder="No. of rares" />
           <Input {...register("mythicsDrafted")} placeholder="No. of mythics" />
+          {/*TODO: ADD PACKS OBTAINED */}
 
           <button type="submit">Insert Draft</button>
         </Form>
       </FlexCol>
-      <FlexCol>
+      <StatsContainer>
         {/*TODO: Memoize?*/}
         <StatsWrapper>
           <StyledText>Total Gems Spent:</StyledText>
           <StyledText>
             {drafts?.reduce(
               (acc, next) =>
-                acc + next.type === "quick"
-                  ? QuickDraftGemCost[next.wins]
-                  : PremierDraftGemCost[next.wins],
+                acc +
+                Number(
+                  next.type === "quick"
+                    ? QuickDraftGemCost[next.wins]
+                    : PremierDraftGemCost[next.wins]
+                ),
               0
             )}
           </StyledText>
@@ -93,9 +99,12 @@ const Drafts = () => {
               ? (
                   drafts?.reduce(
                     (acc, next) =>
-                      acc + next.type === "quick"
-                        ? QuickDraftGemCost[next.wins]
-                        : PremierDraftGemCost[next.wins],
+                      acc +
+                      Number(
+                        next.type === "quick"
+                          ? QuickDraftGemCost[next.wins]
+                          : PremierDraftGemCost[next.wins]
+                      ),
                     0
                   ) / drafts?.length
                 ).toFixed(2)
@@ -143,7 +152,7 @@ const Drafts = () => {
               : 0}
           </StyledText>
         </StatsWrapper>
-      </FlexCol>
+      </StatsContainer>
       {!!drafts?.length ? (
         <DraftTable>
           <tr>
