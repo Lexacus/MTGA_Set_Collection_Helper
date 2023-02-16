@@ -8,10 +8,12 @@ const Flex = styled.div`
   flex-direction: ${({ flexDirection }: FlexProps) =>
     flexDirection ?? "column"};
   width: ${({ width }: FlexProps) => width ?? "100%"};
+  height: 100%;
   margin: ${({ margin }: FlexProps) => margin ?? "fit-content"};
   padding: ${({ padding }: FlexProps) => padding ?? "fit-content"};
   column-gap: ${({ columnGap }: FlexProps) => columnGap ?? "0"};
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
 `;
 

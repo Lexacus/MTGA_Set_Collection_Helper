@@ -4,8 +4,7 @@ import { HTMLAttributes } from "react";
 const StyledDiv = styled.div`
   display: flex;
   width: 100%;
-  height: 100vw;
-  max-width: 1366px;
+  height: 100%;
   overflow-x: hidden;
   justify-content: center;
   align-content: center;

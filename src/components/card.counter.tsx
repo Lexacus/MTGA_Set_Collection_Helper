@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useStore } from "../store";
 import { TCard } from "../types";
 import { FlexCol, FlexRow } from "./base.styles";
-import { Text } from "./text";
 import { shallow } from "zustand/shallow";
+import { StyledText } from "./text/text.styles";
 
 enum RarityColorEnum {
   M = "orange",
@@ -26,10 +26,13 @@ export const CardCounter = ({
 
   return (
     <FlexRow columnGap="10px">
-      <Text width="300px" color={RarityColorEnum[cards?.[index].rarity ?? "R"]}>
+      <StyledText
+        width="300px"
+        color={RarityColorEnum[cards?.[index].rarity ?? "R"]}
+      >
         {cards?.[index].name}
-      </Text>
-      <Text
+      </StyledText>
+      <StyledText
         cursor="pointer"
         onClick={() => {
           if (cards) {
@@ -41,10 +44,10 @@ export const CardCounter = ({
         }}
       >
         {"-"}
-      </Text>
+      </StyledText>
 
-      <Text>{cards?.[index].owned}</Text>
-      <Text
+      <StyledText>{cards?.[index].owned}</StyledText>
+      <StyledText
         cursor="pointer"
         onClick={() => {
           if (cards) {
@@ -56,7 +59,7 @@ export const CardCounter = ({
         }}
       >
         {"+"}
-      </Text>
+      </StyledText>
     </FlexRow>
   );
 };

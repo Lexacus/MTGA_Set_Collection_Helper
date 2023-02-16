@@ -1,3 +1,5 @@
+import { CSSProperties, HTMLAttributes } from "react";
+
 export type TCard = {
   name: string;
   owned: number;
@@ -11,3 +13,5 @@ export type TDraft = {
   mythicsDrafted: number;
   date: string;
 };
+
+export type TText = HTMLAttributes<HTMLParagraphElement> & CSSProperties;
