@@ -1,12 +1,14 @@
 import { useFormContext } from "react-hook-form";
 import {
+  ColorIcon,
   DraftTableCell,
   Input,
   Select,
 } from "../../pages/drafts/drafts.styles";
-import { TDraft } from "../../types";
+import { TColors, TDraft } from "../../types";
 import { Option } from "../../pages/drafts/drafts.styles";
 import dayjs from "dayjs";
+import { FlexRow } from "../base.styles";
 
 export const Draft = ({
   index,
@@ -21,9 +23,10 @@ export const Draft = ({
   draft: Partial<TDraft>;
   deleteDraft: (index: number) => void;
 }) => {
-  const { register } = useFormContext<TDraft[]>();
+  const { register, getValues, setValue, watch } = useFormContext<TDraft[]>();
 
   const {
+    colors,
     wins,
     date,
     losses,
@@ -33,8 +36,38 @@ export const Draft = ({
     type,
   } = draft;
 
+  const currentColors = watch(`${index}.colors`);
+
   return isEditing === index ? (
     <tr>
+      <DraftTableCell>
+        <FlexRow>
+          {["R", "W", "U", "G", "B"].map((color) => {
+            const isSelected = (getValues(`${index}.colors`) ?? []).includes(
+              color as TColors
+            );
+            return (
+              <ColorIcon
+                color={(color as TColors) ?? "W"}
+                selected={isSelected}
+                onClick={() => {
+                  if (!isSelected) {
+                    setValue(`${index}.colors`, [
+                      ...(currentColors ?? []),
+                      color as TColors,
+                    ]);
+                    return;
+                  }
+                  const newColors = (currentColors ?? []).filter(
+                    (editColor) => editColor !== color
+                  );
+                  setValue(`${index}.colors`, newColors);
+                }}
+              />
+            );
+          })}
+        </FlexRow>
+      </DraftTableCell>
       <DraftTableCell>
         <Select
           {...register(`${index}.wins`, {
@@ -132,6 +165,13 @@ export const Draft = ({
     </tr>
   ) : (
     <tr>
+      <DraftTableCell>
+        <FlexRow>
+          {colors?.map((color) => (
+            <ColorIcon color={(color as TColors) ?? "W"} selected={true} />
+          ))}
+        </FlexRow>
+      </DraftTableCell>
       <DraftTableCell>{wins}</DraftTableCell>
       <DraftTableCell>{losses}</DraftTableCell>
       <DraftTableCell>{type}</DraftTableCell>

@@ -142,6 +142,7 @@ const Drafts = () => {
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <DraftTable>
               <tr>
+                <th>Colors</th>
                 <th>Wins</th>
                 <th>Losses</th>
                 <th>Type</th>
@@ -173,7 +174,7 @@ const Drafts = () => {
                 />
               ) : (
                 <tr>
-                  <DraftTableCell colSpan={8}>
+                  <DraftTableCell colSpan={10}>
                     <button
                       onClick={() => {
                         setIsEditing(drafts.length);

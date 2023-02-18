@@ -1,4 +1,24 @@
 import styled from "@emotion/styled";
+import { TColors } from "../../types";
+
+const getColor = (color?: TColors) => {
+  if (color === "R") {
+    return "red";
+  }
+  if (color === "W") {
+    return "white";
+  }
+  if (color === "U") {
+    return "blue";
+  }
+  if (color === "G") {
+    return "green";
+  }
+  if (color === "B") {
+    return "black";
+  }
+  return "red";
+};
 
 export const PageWrapper = styled.div`
   height: calc(100vh - 100px);
@@ -67,3 +87,19 @@ export const DraftWrapper = styled.div`
   justify-content: space-around;
   align-items: center;
 `;
+
+export const ColorIcon = styled.div`
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: ${({ color }: { color?: TColors; selected?: boolean }) => {
+    return getColor(color);
+  }};
+
+  opacity: ${({ selected }: { color?: TColors; selected?: boolean }) =>
+    selected ? "1" : "0.1"};
+`;
+
+/* background-color: ${({ color }: { color?: TColors }) =>
+getColor(color ?? "W")}; */
