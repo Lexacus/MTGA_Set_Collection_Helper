@@ -8,6 +8,7 @@ export type TCard = {
 
 export type TDraft = {
   wins: number;
+  losses: number;
   type: "premier" | "quick";
   raresDrafted: number;
   mythicsDrafted: number;

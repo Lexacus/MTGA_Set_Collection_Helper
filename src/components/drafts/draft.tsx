@@ -23,8 +23,15 @@ export const Draft = ({
 }) => {
   const { register } = useFormContext<TDraft[]>();
 
-  const { wins, date, mythicsDrafted, packsObtained, raresDrafted, type } =
-    draft;
+  const {
+    wins,
+    date,
+    losses,
+    mythicsDrafted,
+    packsObtained,
+    raresDrafted,
+    type,
+  } = draft;
 
   return isEditing === index ? (
     <tr>
@@ -44,6 +51,20 @@ export const Draft = ({
           <Option value={5}>5</Option>
           <Option value={6}>6</Option>
           <Option value={7}>7</Option>
+        </Select>
+      </DraftTableCell>
+      <DraftTableCell>
+        <Select
+          {...register(`${index}.losses`, {
+            value: losses,
+            required: true,
+          })}
+          placeholder="Losses"
+        >
+          <Option value={0}>0</Option>
+          <Option value={1}>1</Option>
+          <Option value={2}>2</Option>
+          <Option value={3}>3</Option>
         </Select>
       </DraftTableCell>
       <DraftTableCell>
@@ -92,7 +113,7 @@ export const Draft = ({
       <DraftTableCell>
         <Input
           {...register(`${index}.date`, {
-            value: dayjs(date).toDate(),
+            value: date ? dayjs(date).toDate() : dayjs().toDate(),
           })}
           placeholder="Draft Start Date"
           type="date"
@@ -112,6 +133,7 @@ export const Draft = ({
   ) : (
     <tr>
       <DraftTableCell>{wins}</DraftTableCell>
+      <DraftTableCell>{losses}</DraftTableCell>
       <DraftTableCell>{type}</DraftTableCell>
       <DraftTableCell>{raresDrafted}</DraftTableCell>
       <DraftTableCell>{mythicsDrafted}</DraftTableCell>

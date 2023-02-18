@@ -105,6 +105,14 @@ const Drafts = () => {
           </StyledText>
         </StatsWrapper>
         <StatsWrapper>
+          <StyledText>Average Rare Gem cost:</StyledText>
+          <StyledText>
+            {!!drafts?.length
+              ? ((totalGemsSpent ?? 0) / (totalRaresDrafted ?? 1)).toFixed(2)
+              : 0}
+          </StyledText>
+        </StatsWrapper>
+        <StatsWrapper>
           <StyledText>Total Mythics Drafted:</StyledText>
           <StyledText>{totalMythicsDrafted}</StyledText>
         </StatsWrapper>
@@ -113,6 +121,14 @@ const Drafts = () => {
           <StyledText>
             {!!drafts?.length
               ? ((totalMythicsDrafted ?? 0) / drafts?.length).toFixed(2)
+              : 0}
+          </StyledText>
+        </StatsWrapper>
+        <StatsWrapper>
+          <StyledText>Average Mythic Gem cost:</StyledText>
+          <StyledText>
+            {!!drafts?.length
+              ? ((totalGemsSpent ?? 0) / (totalMythicsDrafted ?? 1)).toFixed(2)
               : 0}
           </StyledText>
         </StatsWrapper>
@@ -127,6 +143,7 @@ const Drafts = () => {
             <DraftTable>
               <tr>
                 <th>Wins</th>
+                <th>Losses</th>
                 <th>Type</th>
                 <th>Rares Drafted</th>
                 <th>Mythics Drafted</th>
