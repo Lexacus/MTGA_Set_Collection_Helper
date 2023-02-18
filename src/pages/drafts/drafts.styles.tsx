@@ -1,5 +1,12 @@
 import styled from "@emotion/styled";
 
+export const PageWrapper = styled.div`
+  height: calc(100vh - 100px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 export const Form = styled.form`
   max-width: 600px;
 `;
@@ -47,6 +54,7 @@ export const DraftTableCell = styled.td`
   text-align: center;
   background-color: rgba(122, 77, 39, 0.1);
   padding: 10px;
+  cursor: ${(props) => (props.onClick ? "pointer" : "normal")};
 `;
 
 export const DraftWrapper = styled.div`

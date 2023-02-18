@@ -1,22 +1,16 @@
-import dayjs from "dayjs";
 import { useMemo, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { shallow } from "zustand/shallow";
-import { FlexCol, FlexRow } from "../../components/base.styles";
+import { Draft } from "../../components/drafts/draft";
 import { StyledText } from "../../components/text/text.styles";
 import { useStore } from "../../store";
 import { TDraft } from "../../types";
 import {
-  Form,
-  Select,
-  Option,
-  DraftWrapper,
   DraftTable,
   DraftTableCell,
-  Input,
-  StatsWrapper,
-  StatsContainer,
   PageWrapper,
+  StatsContainer,
+  StatsWrapper,
 } from "./drafts.styles";
 
 const Drafts = () => {
@@ -30,7 +24,7 @@ const Drafts = () => {
 
   const [isEditing, setIsEditing] = useState<number>();
 
-  const { register, handleSubmit, setValue } = useForm<TDraft[]>({
+  const methods = useForm<TDraft[]>({
     defaultValues: drafts,
     shouldUnregister: true,
   });
@@ -76,6 +70,11 @@ const Drafts = () => {
 
     /*     setDrafts(drafts ?? []); */
     setIsEditing(undefined);
+  };
+
+  const deleteDraft = (i: number) => {
+    const newDrafts = drafts?.filter((x, index) => index !== i);
+    setDrafts(newDrafts ?? []);
   };
 
   return (
@@ -162,123 +161,54 @@ const Drafts = () => {
         </StatsWrapper>
       </StatsContainer>
       {!!drafts?.length ? (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <DraftTable>
-            <tr>
-              <th>Wins</th>
-              <th>Type</th>
-              <th>Rares Drafted</th>
-              <th>Mythics Drafted</th>
-              <th>Packs Obtained</th>
-              <th>Draft Start Date</th>
-              <th>Edit Draft</th>
-              <th>Delete Draft</th>
-            </tr>
+        <FormProvider {...methods}>
+          <form onSubmit={methods.handleSubmit(onSubmit)}>
+            <DraftTable>
+              <tr>
+                <th>Wins</th>
+                <th>Type</th>
+                <th>Rares Drafted</th>
+                <th>Mythics Drafted</th>
+                <th>Packs Obtained</th>
+                <th>Draft Start Date</th>
+                <th>Edit Draft</th>
+                <th>Delete Draft</th>
+              </tr>
 
-            {drafts?.map(
-              (
-                {
-                  wins,
-                  date,
-                  mythicsDrafted,
-                  packsObtained,
-                  raresDrafted,
-                  type,
-                },
-                i
-              ) => (
-                <tr
-                  key={`${wins}${type}${raresDrafted}${mythicsDrafted}${i}`}
-                ></tr>
-              )
-            )}
-            {isEditing === drafts.length ? (
-              <tr>
-                <DraftTableCell>
-                  <Select
-                    {...register(`${drafts.length}.wins`, {
-                      required: true,
-                    })}
-                    placeholder="Wins"
-                  >
-                    <Option value={0}>0</Option>
-                    <Option value={1}>1</Option>
-                    <Option value={2}>2</Option>
-                    <Option value={3}>3</Option>
-                    <Option value={4}>4</Option>
-                    <Option value={5}>5</Option>
-                    <Option value={6}>6</Option>
-                    <Option value={7}>7</Option>
-                  </Select>
-                </DraftTableCell>
-                <DraftTableCell>
-                  <Select
-                    {...register(`${drafts.length}.type`, {
-                      required: true,
-                    })}
-                  >
-                    <Option value={"premier"}>Premier</Option>
-                    <Option value={"traditional"}>Traditional</Option>
-                    <Option value={"quick"}>Quick</Option>
-                  </Select>
-                </DraftTableCell>
-                <DraftTableCell>
-                  <Input
-                    {...register(`${drafts.length}.raresDrafted`, {
-                      required: true,
-                    })}
-                    type="number"
-                    placeholder="No. of rares"
-                  />
-                </DraftTableCell>
-                <DraftTableCell>
-                  <Input
-                    {...register(`${drafts.length}.mythicsDrafted`, {
-                      required: true,
-                    })}
-                    type="number"
-                    placeholder="No. of mythics"
-                  />
-                </DraftTableCell>
-                <DraftTableCell>
-                  {" "}
-                  <Input
-                    {...register(`${drafts.length}.packsObtained`, {
-                      required: true,
-                    })}
-                    type="number"
-                    placeholder="Packs obtained"
-                  />
-                </DraftTableCell>
-                <DraftTableCell>
-                  <Input
-                    {...register(`${drafts.length}.date`, {
-                      value: dayjs().toDate(),
-                    })}
-                    placeholder="Draft Start Date"
-                    type="date"
-                  />
-                </DraftTableCell>
-                <DraftTableCell>
-                  <button type="submit">{"Done"}</button>
-                </DraftTableCell>
-                <DraftTableCell>X</DraftTableCell>
-              </tr>
-            ) : (
-              <tr>
-                <DraftTableCell colSpan={8}>
-                  <button
-                    onClick={() => {
-                      setIsEditing(drafts.length);
-                    }}
-                  >
-                    Add Draft
-                  </button>
-                </DraftTableCell>
-              </tr>
-            )}
-          </DraftTable>
-        </form>
+              {drafts?.map((draft, i) => (
+                <Draft
+                  key={`${draft.wins}${draft.type}${draft.raresDrafted}${draft.mythicsDrafted}${i}`}
+                  draft={draft}
+                  index={i}
+                  isEditing={isEditing}
+                  setIsEditing={setIsEditing}
+                  deleteDraft={deleteDraft}
+                />
+              ))}
+              {isEditing === drafts.length ? (
+                <Draft
+                  isEditing={isEditing}
+                  index={drafts.length}
+                  setIsEditing={setIsEditing}
+                  draft={{}}
+                  deleteDraft={deleteDraft}
+                />
+              ) : (
+                <tr>
+                  <DraftTableCell colSpan={8}>
+                    <button
+                      onClick={() => {
+                        setIsEditing(drafts.length);
+                      }}
+                    >
+                      Add Draft
+                    </button>
+                  </DraftTableCell>
+                </tr>
+              )}
+            </DraftTable>
+          </form>
+        </FormProvider>
       ) : (
         <StyledText>No drafts saved</StyledText>
       )}

@@ -67,9 +67,10 @@ const Homepage = () => {
 
     const element = document.createElement("a");
     const file = new Blob([data], { type: "StyledText/plain" });
+    const today = dayjs().format("DD/MM/YYYY").split("/");
 
     element.href = URL.createObjectURL(file);
-    element.download = "mtg_sch_cards.json";
+    element.download = `mtg_sch_cards_${today[0]}_${today[1]}_${today[2]}.json`;
     document.body.appendChild(element); // Required for this to work in FireFox
     element.click();
     URL.revokeObjectURL(element.href);

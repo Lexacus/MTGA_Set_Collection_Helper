@@ -1,19 +1,36 @@
-import { DraftTableCell, Select } from "../../pages/drafts/drafts.styles";
+import { useFormContext } from "react-hook-form";
+import {
+  DraftTableCell,
+  Input,
+  Select,
+} from "../../pages/drafts/drafts.styles";
+import { TDraft } from "../../types";
+import { Option } from "../../pages/drafts/drafts.styles";
+import dayjs from "dayjs";
 
 export const Draft = ({
   index,
   isEditing,
+  setIsEditing,
+  draft,
+  deleteDraft,
 }: {
   index: number;
-  isEditing: number;
+  isEditing?: number;
+  setIsEditing: (num: number) => void;
+  draft: Partial<TDraft>;
+  deleteDraft: (index: number) => void;
 }) => {
-  const { register } = use;
+  const { register } = useFormContext<TDraft[]>();
+
+  const { wins, date, mythicsDrafted, packsObtained, raresDrafted, type } =
+    draft;
 
   return isEditing === index ? (
-    <>
+    <tr>
       <DraftTableCell>
         <Select
-          {...register(`${i}.wins`, {
+          {...register(`${index}.wins`, {
             value: wins,
             required: true,
           })}
@@ -31,7 +48,7 @@ export const Draft = ({
       </DraftTableCell>
       <DraftTableCell>
         <Select
-          {...register(`${i}.type`, {
+          {...register(`${index}.type`, {
             value: type,
             required: true,
           })}
@@ -43,7 +60,7 @@ export const Draft = ({
       </DraftTableCell>
       <DraftTableCell>
         <Input
-          {...register(`${i}.raresDrafted`, {
+          {...register(`${index}.raresDrafted`, {
             value: raresDrafted,
             required: true,
           })}
@@ -53,7 +70,7 @@ export const Draft = ({
       </DraftTableCell>
       <DraftTableCell>
         <Input
-          {...register(`${i}.mythicsDrafted`, {
+          {...register(`${index}.mythicsDrafted`, {
             value: mythicsDrafted,
             required: true,
           })}
@@ -64,7 +81,7 @@ export const Draft = ({
       <DraftTableCell>
         {" "}
         <Input
-          {...register(`${i}.packsObtained`, {
+          {...register(`${index}.packsObtained`, {
             value: packsObtained,
             required: true,
           })}
@@ -74,7 +91,7 @@ export const Draft = ({
       </DraftTableCell>
       <DraftTableCell>
         <Input
-          {...register(`${i}.date`, {
+          {...register(`${index}.date`, {
             value: dayjs(date).toDate(),
           })}
           placeholder="Draft Start Date"
@@ -85,9 +102,9 @@ export const Draft = ({
         <button type="submit">{"Done"}</button>
       </DraftTableCell>
       <DraftTableCell>X</DraftTableCell>
-    </>
+    </tr>
   ) : (
-    <>
+    <tr>
       <DraftTableCell>{wins}</DraftTableCell>
       <DraftTableCell>{type}</DraftTableCell>
       <DraftTableCell>{raresDrafted}</DraftTableCell>
@@ -96,19 +113,18 @@ export const Draft = ({
       <DraftTableCell>{dayjs(date).format("DD/MM/YYYY")}</DraftTableCell>
       <DraftTableCell
         onClick={() => {
-          setIsEditing(i);
+          setIsEditing(index);
         }}
       >
         {/* isEditing === i ? "Done" :  */ "Edit"}
       </DraftTableCell>
       <DraftTableCell
         onClick={() => {
-          const newDrafts = drafts.filter((x, index) => index !== i);
-          setDrafts(newDrafts);
+          deleteDraft(index);
         }}
       >
         X
       </DraftTableCell>
-    </>
+    </tr>
   );
 };

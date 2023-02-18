@@ -11,7 +11,8 @@ export type TDraft = {
   type: "premier" | "quick";
   raresDrafted: number;
   mythicsDrafted: number;
-  date: string;
+  packsObtained: number;
+  date: Date;
 };
 
 export type TText = HTMLAttributes<HTMLParagraphElement> & CSSProperties;
