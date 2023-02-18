@@ -17,7 +17,7 @@ export const Draft = ({
 }: {
   index: number;
   isEditing?: number;
-  setIsEditing: (num: number) => void;
+  setIsEditing: (num?: number) => void;
   draft: Partial<TDraft>;
   deleteDraft: (index: number) => void;
 }) => {
@@ -101,7 +101,13 @@ export const Draft = ({
       <DraftTableCell>
         <button type="submit">{"Done"}</button>
       </DraftTableCell>
-      <DraftTableCell>X</DraftTableCell>
+      <DraftTableCell
+        onClick={() => {
+          setIsEditing(undefined);
+        }}
+      >
+        X
+      </DraftTableCell>
     </tr>
   ) : (
     <tr>

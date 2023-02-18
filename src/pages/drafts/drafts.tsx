@@ -66,9 +66,9 @@ const Drafts = () => {
       return;
     } */
     drafts?.splice(isEditing!, 1, Object.values(data)[0]);
-    console.log(drafts);
+    console.log(data);
 
-    /*     setDrafts(drafts ?? []); */
+    setDrafts(drafts ?? []);
     setIsEditing(undefined);
   };
 
@@ -79,45 +79,6 @@ const Drafts = () => {
 
   return (
     <PageWrapper>
-      {/*      <FlexCol>
-        <Form
-          onSubmit={handleSubmit(onSubmit)}
-          style={{ display: "flex", flexDirection: "column" }}
-        >
-          <Select
-            {...register(`${drafts?.length ?? 0}.wins`)}
-            placeholder="Wins"
-          >
-            <Option value={0}>0</Option>
-            <Option value={1}>1</Option>
-            <Option value={2}>2</Option>
-            <Option value={3}>3</Option>
-            <Option value={4}>4</Option>
-            <Option value={5}>5</Option>
-            <Option value={6}>6</Option>
-            <Option value={7}>7</Option>
-          </Select>
-          <Select {...register(`${drafts?.length ?? 0}.type`)}>
-            <Option value={"premier"}>Premier</Option>
-            <Option value={"traditional"}>Traditional</Option>
-            <Option value={"quick"}>Quick</Option>
-          </Select>
-          <Input
-            {...register(`${drafts?.length ?? 0}.raresDrafted`)}
-            placeholder="No. of rares"
-          />
-          <Input
-            {...register(`${drafts?.length ?? 0}.mythicsDrafted`)}
-            placeholder="No. of mythics"
-          />
-          <Input
-            {...register(`${drafts?.length ?? 0}.packsObtained`)}
-            placeholder="Packs obtained"
-          />
-
-          <button type="submit">Insert Draft</button>
-        </Form>
-      </FlexCol> */}
       <StatsContainer>
         <StatsWrapper>
           <StyledText>Total Gems Spent:</StyledText>
