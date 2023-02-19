@@ -13,6 +13,8 @@ import {
   StatsWrapper,
 } from "./drafts.styles";
 
+//commit comment
+
 const Drafts = () => {
   const { drafts, setDrafts } = useStore(
     ({ drafts, setDrafts }) => ({
