@@ -47,6 +47,7 @@ export const Draft = ({
             const isSelected = (currentColors ?? []).includes(color as TColors);
             return (
               <ColorIcon
+                {...register(`${index}.colors`, { value: colors })}
                 key={`${color + index}`}
                 color={(color as TColors) ?? "W"}
                 selected={isSelected}

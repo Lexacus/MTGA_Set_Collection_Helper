@@ -93,6 +93,7 @@ export const ColorIcon = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 50%;
+  margin-left: 5px;
   background-color: ${({ color }: { color?: TColors; selected?: boolean }) => {
     return getColor(color);
   }};
