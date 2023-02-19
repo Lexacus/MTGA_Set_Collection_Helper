@@ -23,7 +23,8 @@ export const Draft = ({
   draft: Partial<TDraft>;
   deleteDraft: (index: number) => void;
 }) => {
-  const { register, getValues, setValue, watch } = useFormContext<TDraft[]>();
+  const { register, unregister, getValues, setValue, watch } =
+    useFormContext<TDraft[]>();
 
   const {
     colors,
@@ -43,11 +44,10 @@ export const Draft = ({
       <DraftTableCell>
         <FlexRow>
           {["R", "W", "U", "G", "B"].map((color) => {
-            const isSelected = (getValues(`${index}.colors`) ?? []).includes(
-              color as TColors
-            );
+            const isSelected = (currentColors ?? []).includes(color as TColors);
             return (
               <ColorIcon
+                key={`${color + index}`}
                 color={(color as TColors) ?? "W"}
                 selected={isSelected}
                 onClick={() => {
@@ -158,6 +158,7 @@ export const Draft = ({
       <DraftTableCell
         onClick={() => {
           setIsEditing(undefined);
+          unregister(`${index}.colors`);
         }}
       >
         X

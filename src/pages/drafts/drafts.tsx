@@ -62,10 +62,8 @@ const Drafts = () => {
   }, [drafts]);
 
   const onSubmit: SubmitHandler<TDraft[]> = (data) => {
-    /*     if (!isEditing) {
-      return;
-    } */
-    drafts?.splice(isEditing!, 1, Object.values(data)[0]);
+    drafts?.splice(isEditing ?? 0, 1, Object.values(data)[0]);
+    methods.unregister(`${isEditing ?? 0}`);
     console.log(data);
 
     setDrafts(drafts ?? []);
