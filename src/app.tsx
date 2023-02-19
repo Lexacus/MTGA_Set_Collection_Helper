@@ -1,7 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import "./App.css";
+import "./app.css";
 import { Header } from "./components/layout/header";
 import Wrapper from "./components/wrapper";
 import Drafts from "./pages/drafts/drafts";
