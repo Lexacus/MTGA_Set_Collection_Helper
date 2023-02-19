@@ -107,9 +107,9 @@ export const Draft = ({
             required: true,
           })}
         >
-          <Option value={"premier"}>Premier</Option>
-          <Option value={"traditional"}>Traditional</Option>
-          <Option value={"quick"}>Quick</Option>
+          <Option value={"Premier"}>Premier</Option>
+          <Option value={"Traditional"}>Traditional</Option>
+          <Option value={"Quick"}>Quick</Option>
         </Select>
       </DraftTableCell>
       <DraftTableCell>

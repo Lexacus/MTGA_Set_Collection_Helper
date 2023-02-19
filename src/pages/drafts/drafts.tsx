@@ -43,7 +43,7 @@ const Drafts = () => {
       (acc, next) =>
         acc +
         Number(
-          next.type === "quick"
+          next.type === "Quick"
             ? QuickDraftGemCost[next.wins]
             : PremierDraftGemCost[next.wins]
         ),

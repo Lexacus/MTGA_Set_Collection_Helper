@@ -12,7 +12,7 @@ export type TDraft = {
   colors: TColors[];
   wins: number;
   losses: number;
-  type: "premier" | "quick";
+  type: "Premier" | "Quick";
   raresDrafted: number;
   mythicsDrafted: number;
   packsObtained: number;
