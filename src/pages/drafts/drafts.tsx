@@ -13,6 +13,8 @@ import {
   StatsWrapper,
 } from "./drafts.styles";
 
+//commit comment
+
 const Drafts = () => {
   const { drafts, setDrafts } = useStore(
     ({ drafts, setDrafts }) => ({
@@ -62,13 +64,11 @@ const Drafts = () => {
   }, [drafts]);
 
   const onSubmit: SubmitHandler<TDraft[]> = (data) => {
-    /*     if (!isEditing) {
-      return;
-    } */
-    drafts?.splice(isEditing!, 1, Object.values(data)[0]);
-    console.log(drafts);
+    drafts?.splice(isEditing ?? 0, 1, Object.values(data)[0]);
+    methods.unregister(`${isEditing ?? 0}`);
+    console.log(data);
 
-    /*     setDrafts(drafts ?? []); */
+    setDrafts(drafts ?? []);
     setIsEditing(undefined);
   };
 
@@ -79,45 +79,6 @@ const Drafts = () => {
 
   return (
     <PageWrapper>
-      {/*      <FlexCol>
-        <Form
-          onSubmit={handleSubmit(onSubmit)}
-          style={{ display: "flex", flexDirection: "column" }}
-        >
-          <Select
-            {...register(`${drafts?.length ?? 0}.wins`)}
-            placeholder="Wins"
-          >
-            <Option value={0}>0</Option>
-            <Option value={1}>1</Option>
-            <Option value={2}>2</Option>
-            <Option value={3}>3</Option>
-            <Option value={4}>4</Option>
-            <Option value={5}>5</Option>
-            <Option value={6}>6</Option>
-            <Option value={7}>7</Option>
-          </Select>
-          <Select {...register(`${drafts?.length ?? 0}.type`)}>
-            <Option value={"premier"}>Premier</Option>
-            <Option value={"traditional"}>Traditional</Option>
-            <Option value={"quick"}>Quick</Option>
-          </Select>
-          <Input
-            {...register(`${drafts?.length ?? 0}.raresDrafted`)}
-            placeholder="No. of rares"
-          />
-          <Input
-            {...register(`${drafts?.length ?? 0}.mythicsDrafted`)}
-            placeholder="No. of mythics"
-          />
-          <Input
-            {...register(`${drafts?.length ?? 0}.packsObtained`)}
-            placeholder="Packs obtained"
-          />
-
-          <button type="submit">Insert Draft</button>
-        </Form>
-      </FlexCol> */}
       <StatsContainer>
         <StatsWrapper>
           <StyledText>Total Gems Spent:</StyledText>
@@ -144,6 +105,14 @@ const Drafts = () => {
           </StyledText>
         </StatsWrapper>
         <StatsWrapper>
+          <StyledText>Average Rare Gem cost:</StyledText>
+          <StyledText>
+            {!!drafts?.length
+              ? ((totalGemsSpent ?? 0) / (totalRaresDrafted ?? 1)).toFixed(2)
+              : 0}
+          </StyledText>
+        </StatsWrapper>
+        <StatsWrapper>
           <StyledText>Total Mythics Drafted:</StyledText>
           <StyledText>{totalMythicsDrafted}</StyledText>
         </StatsWrapper>
@@ -152,6 +121,14 @@ const Drafts = () => {
           <StyledText>
             {!!drafts?.length
               ? ((totalMythicsDrafted ?? 0) / drafts?.length).toFixed(2)
+              : 0}
+          </StyledText>
+        </StatsWrapper>
+        <StatsWrapper>
+          <StyledText>Average Mythic Gem cost:</StyledText>
+          <StyledText>
+            {!!drafts?.length
+              ? ((totalGemsSpent ?? 0) / (totalMythicsDrafted ?? 1)).toFixed(2)
               : 0}
           </StyledText>
         </StatsWrapper>
@@ -165,7 +142,9 @@ const Drafts = () => {
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <DraftTable>
               <tr>
+                <th>Colors</th>
                 <th>Wins</th>
+                <th>Losses</th>
                 <th>Type</th>
                 <th>Rares Drafted</th>
                 <th>Mythics Drafted</th>
@@ -195,7 +174,7 @@ const Drafts = () => {
                 />
               ) : (
                 <tr>
-                  <DraftTableCell colSpan={8}>
+                  <DraftTableCell colSpan={10}>
                     <button
                       onClick={() => {
                         setIsEditing(drafts.length);

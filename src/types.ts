@@ -6,8 +6,12 @@ export type TCard = {
   rarity: "M" | "R" | "U" | "N";
 };
 
+export type TColors = "R" | "W" | "U" | "G" | "B";
+
 export type TDraft = {
+  colors: TColors[];
   wins: number;
+  losses: number;
   type: "premier" | "quick";
   raresDrafted: number;
   mythicsDrafted: number;
