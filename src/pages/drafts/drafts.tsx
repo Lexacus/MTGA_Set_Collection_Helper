@@ -8,6 +8,7 @@ import { TDraft } from "../../types";
 import {
   DraftTable,
   DraftTableCell,
+  Input,
   PageWrapper,
   StatsContainer,
   StatsWrapper,
@@ -25,6 +26,7 @@ const Drafts = () => {
   );
 
   const [isEditing, setIsEditing] = useState<number>();
+  const [packsOwned, setPacksOwned] = useState(0);
 
   const methods = useForm<TDraft[]>({
     defaultValues: drafts,
@@ -62,6 +64,13 @@ const Drafts = () => {
   const totalPacksObtained = useMemo(() => {
     return drafts?.reduce((acc, next) => acc + Number(next.packsObtained), 0);
   }, [drafts]);
+
+  const draftsToRareCompletion = useMemo(() => {
+    return Math.ceil(
+      (240 - (totalRaresDrafted ?? 0) - (packsOwned * 7) / 8) /
+        ((totalRaresDrafted ?? 0) / (drafts?.length ?? 1))
+    );
+  }, [drafts, packsOwned]);
 
   const onSubmit: SubmitHandler<TDraft[]> = (data) => {
     drafts?.splice(isEditing ?? 0, 1, Object.values(data)[0]);
@@ -105,10 +114,22 @@ const Drafts = () => {
           </StyledText>
         </StatsWrapper>
         <StatsWrapper>
-          <StyledText>Average Rare Gem cost:</StyledText>
+          <StyledText>{"Average Rare Gem cost (packs excluded):"}</StyledText>
           <StyledText>
             {!!drafts?.length
               ? ((totalGemsSpent ?? 0) / (totalRaresDrafted ?? 1)).toFixed(2)
+              : 0}
+          </StyledText>
+        </StatsWrapper>
+        <StatsWrapper>
+          <StyledText>{"Average Rare Gem cost (packs included):"}</StyledText>
+          <StyledText>
+            {!!drafts?.length
+              ? (
+                  (totalGemsSpent ?? 0) /
+                  ((totalRaresDrafted ?? 0) +
+                    (totalPacksObtained ?? 0) * (7 / 8))
+                ).toFixed(2)
               : 0}
           </StyledText>
         </StatsWrapper>
@@ -135,6 +156,17 @@ const Drafts = () => {
         <StatsWrapper>
           <StyledText>Total Packs Obtained: </StyledText>
           <StyledText>{totalPacksObtained}</StyledText>
+        </StatsWrapper>
+        <StatsWrapper>
+          <StyledText>Packs owned</StyledText>
+          <Input
+            value={packsOwned}
+            onChange={(e) => setPacksOwned(parseInt(e.target.value))}
+          ></Input>
+        </StatsWrapper>
+        <StatsWrapper>
+          <StyledText>Drafts remaining to rare completion: </StyledText>
+          <StyledText>{draftsToRareCompletion}</StyledText>
         </StatsWrapper>
       </StatsContainer>
       {!!drafts?.length ? (
