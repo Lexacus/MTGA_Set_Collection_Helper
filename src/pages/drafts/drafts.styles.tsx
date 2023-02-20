@@ -68,6 +68,7 @@ export const DraftTable = styled.table`
   border-collapse: collapse;
   font-family: Montserrat;
   margin-top: 30px;
+  overflow-x: auto;
 `;
 
 export const DraftTableCell = styled.td`
